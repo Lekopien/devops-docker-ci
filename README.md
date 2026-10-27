@@ -59,3 +59,7 @@ docker run -p 8000:8000 ghcr.io/lekopien/devops-docker-ci:latest
 ## License
 
 MIT
+
+## Author
+
+Built by **David Lekopien** ([@Lekopien](https://github.com/Lekopien)) · [lekopien.com](https://lekopien.com)
