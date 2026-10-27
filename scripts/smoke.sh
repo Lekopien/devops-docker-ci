@@ -6,7 +6,7 @@ BASE=${BASE:-http://localhost:8080}
 echo "health:    $(curl -fsS "$BASE/healthz")"
 echo "readiness: $(curl -fsS "$BASE/readyz")"
 
-instances=$(for i in $(seq 1 12); do curl -fsS "$BASE/api/hits" | sed 's/.*"instance": "\([^"]*\)".*/\1/'; done | sort -u | wc -l)
+instances=$(for i in $(seq 1 12); do { curl -fsS "$BASE/api/hits"; echo; } | sed 's/.*"instance": "\([^"]*\)".*/\1/'; done | sort -u | wc -l)
 echo "replicas answering: $instances"
 [ "$instances" -ge 2 ] || { echo "expected load balancing across replicas"; exit 1; }
 

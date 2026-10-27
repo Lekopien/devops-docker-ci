@@ -121,7 +121,7 @@ def make_handler(app: App):
                                 self.status, time.perf_counter() - start)
 
         def log_message(self, fmt, *args):
-            log.info(json.dumps({"instance": INSTANCE, "client": self.client_address[0], "request": self.requestline, "status": getattr(self, "status", 0)}))
+            log.info(json.dumps({"instance": INSTANCE, "client": self.client_address[0], "request": self.requestline, "status": int(args[1]) if len(args) > 1 and str(args[1]).isdigit() else 0}))
 
     return Handler
 
