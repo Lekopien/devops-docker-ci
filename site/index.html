@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DevOps: Docker and CI/CD · Lekopien</title>
+  <meta name="description" content="A service packaged with a hardened multi-stage Docker image, nginx load balancing three replicas, Redis, health probes, Prometheus metrics and a GitHub Actions pipeline that tests, lints, smoke-tests the stack and publishes to GHCR.">
+  <link rel="stylesheet" href="style.css">
+  
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <a class="brand" href="https://lekopien.com">lekopien<span>.</span>devops</a>
+  <nav><a href="#features">Features</a><a href="#code">Code</a><a href="https://github.com/Lekopien/devops-docker-ci">GitHub</a></nav>
+</div></header>
+<main class="wrap">
+  <div class="hero">
+    <span class="tag">DevOps · Containers</span>
+    <h1>Ship it like production</h1>
+    <p class="lead">A service packaged with a hardened multi-stage Docker image, nginx load balancing three replicas, Redis, health probes, Prometheus metrics and a GitHub Actions pipeline that tests, lints, smoke-tests the stack and publishes to GHCR.</p>
+    <div class="btns"><a class="btn" href="https://github.com/Lekopien/devops-docker-ci">View source</a><a class="btn ghost" href="#code">Run it locally</a></div>
+  </div>
+  <section id="features"><h2>Highlights</h2><div class="grid"><div class="card"><h3>Tests inside the build</h3><p>The Dockerfile has a test stage; a failing test means no image.</p></div><div class="card"><h3>Load balanced</h3><p>nginx round-robins across replicas, re-resolving DNS so scaling just works.</p></div><div class="card"><h3>Hardened</h3><p>Non-root user, read-only filesystem, no-new-privileges, resource limits, security headers.</p></div><div class="card"><h3>Observable</h3><p>Liveness and readiness probes, Prometheus metrics, JSON logs from app and proxy.</p></div><div class="card"><h3>Resilient</h3><p>Rate limiting, upstream retries, graceful SIGTERM shutdown, Redis fallback.</p></div><div class="card"><h3>Full pipeline</h3><p>Unit tests, hadolint, compose integration and smoke test, publish to ghcr.io on main.</p></div></div></section>
+  
+  <section id="code"><h2>Run it</h2><h3>Run the stack</h3><pre><code>git clone https://github.com/Lekopien/devops-docker-ci
+cd devops-docker-ci
+make up      # nginx + 3 app replicas + redis
+make smoke   # health, readiness, load balancing, rate limiting
+make scale N=5</code></pre><h3>Architecture</h3><pre><code> :8080 ──► nginx ──round-robin──► app ×3 ──► redis
+           rate limit, gzip     /healthz /readyz /metrics</code></pre><h3>Pipeline</h3><pre><code>push/PR ─► test (unittest + hadolint)
+        ─► integration (docker compose up --wait + smoke.sh)
+        ─► publish (main only → ghcr.io/lekopien/devops-docker-ci)</code></pre></section>
+  <section><h2>Stack</h2><div class="chips"><span class="chip">Docker</span><span class="chip">Docker Compose</span><span class="chip">nginx</span><span class="chip">Redis</span><span class="chip">Python</span><span class="chip">Prometheus format</span><span class="chip">GitHub Actions</span><span class="chip">GHCR</span></div></section>
+</main>
+<footer><div class="wrap">Built by <a href="https://lekopien.com">Lekopien</a>. Part of the Lekopien project portfolio. <a href="https://github.com/Lekopien/devops-docker-ci">Source on GitHub</a>.</div></footer>
+
+</body>
+</html>
